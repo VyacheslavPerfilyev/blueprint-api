@@ -8,24 +8,37 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
       - name: Set up JDK 17
         uses: actions/setup-java@v2
+        if: success() # Only run if checkout is successful
         with:
           java-version: 17
           distribution: 'adopt'
           cache: gradle
+
       - name: Build with Gradle
         run: ./gradlew build
+        if: success() # Only run if setup of JDK 17 is successful
+
       - name: Archive test report
         uses: actions/upload-artifact@v2
+        if: success() # Only run if build with Gradle is successful
         with:
           name: Test report
           path: build/reports/tests/test
+
       - name: Build Docker image
-        run: docker build . -t my-image-name
-      # The following steps are optional and are used to log in to DockerHub and push the image.
+        run: |
+          docker build . -t my-image-name
+        if: success() # Only run if archiving test report is successful
+
       - name: Log in to DockerHub
-        run: echo "1715855zZ" | docker login -u bebrabig --password-stdin
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        if: success() # Only run if Docker image build is successful
+
       - name: Push Docker image
         run: docker push my-image-name
+        if: success() # Only run if Docker login is successful
