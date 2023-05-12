@@ -16,7 +16,7 @@ jobs:
         if: success() # Only run if checkout is successful
         with:
           java-version: 17
-          distribution: 'adopt'
+          distribution: 'eclipse-temurin'
           cache: gradle
 
       - name: Build with Gradle
