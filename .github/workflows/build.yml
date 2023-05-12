@@ -23,8 +23,7 @@ jobs:
           name: Test report
           path: build/reports/tests/test
       - name: Build Docker image
-        run: |
-          docker build . -t my-image-name
+        run: docker build . -t my-image-name
       # The following steps are optional and are used to log in to DockerHub and push the image.
       - name: Log in to DockerHub
         run: echo "1715855zZ" | docker login -u bebrabig --password-stdin
