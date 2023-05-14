@@ -13,7 +13,7 @@ USER spring-app:spring-app
 WORKDIR /opt/build
 
 # Copy the application JAR file into the image
-COPY application.jar ./application.jar
+COPY ./build/libs/*-SNAPSHOT.jar ./application.jar
 
 # Use Spring Boot's layer tools to extract the application layers
 RUN java -Djarmode=layertools -jar application.jar extract
