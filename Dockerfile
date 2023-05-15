@@ -25,9 +25,6 @@ USER spring-app:spring-app
 # Use Spring Boot's layer tools to extract the application layers
 RUN java -Djarmode=layertools -jar application.jar extract
 
-# Print the contents of the directory after jlink
-RUN ls -la
-
 # Use jlink to build a custom JRE based on the modules the application needs
 # Note: This will fail if any of the JAR files are multi-release JAR files
 RUN $JAVA_HOME/bin/jlink \
@@ -37,9 +34,6 @@ RUN $JAVA_HOME/bin/jlink \
          --no-header-files \
          --compress=2 \
          --output jdk
-
-# Print the contents of the directory after jlink
-RUN ls -la
 
 # Second stage: Build the final Docker image
 FROM debian:buster-slim
@@ -67,6 +61,9 @@ COPY --from=app-build $BUILD_PATH/spring-boot-loader/ ./
 COPY --from=app-build $BUILD_PATH/dependencies/ ./
 COPY --from=app-build $BUILD_PATH/snapshot-dependencies/ ./
 COPY --from=app-build $BUILD_PATH/application/ ./
+
+# Print the contents of the directory after jlink
+RUN ls -la
 
 # Specify the command to run when the Docker container starts
 ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
