@@ -5,23 +5,15 @@ FROM eclipse-temurin:17 as app-build
 ENV RELEASE=17
 
 # Create a non-root user for running the application
-RUN groupadd --gid 1000 spring-app \
-  && useradd --uid 1000 --gid spring-app --shell /bin/bash --create-home spring-app
+#RUN groupadd --gid 1000 spring-app \
+#  && useradd --uid 1000 --gid spring-app --shell /bin/bash --create-home spring-app
 
 # Use the non-root user and set the working directory
-USER spring-app:spring-app
+USER root
 WORKDIR /opt/build
 
 # Copy the application JAR file into the image
 COPY ./build/libs/*-SNAPSHOT.jar ./application.jar
-
-# Switch back to root user to create directories and change ownership
-USER root
-RUN mkdir -p /opt/build/dependencies \
-  && chown -R spring-app:spring-app /opt/build
-
-# Switch back to spring-app user
-USER spring-app:spring-app
 
 # Use Spring Boot's layer tools to extract the application layers
 RUN java -Djarmode=layertools -jar application.jar extract
