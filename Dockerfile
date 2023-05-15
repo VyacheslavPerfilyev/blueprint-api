@@ -15,6 +15,9 @@ WORKDIR /opt/build
 # Copy the application JAR file into the image
 COPY ./build/libs/*-SNAPSHOT.jar ./application.jar
 
+# Print file permissions and ownership information
+RUN ls -al /opt/build
+
 # Use Spring Boot's layer tools to extract the application layers
 RUN java -Djarmode=layertools -jar application.jar extract
 
