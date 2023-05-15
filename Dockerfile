@@ -57,12 +57,8 @@ COPY --from=app-build $BUILD_PATH/jdk $JAVA_HOME
 COPY --from=app-build $BUILD_PATH/spring-boot-loader/ ./
 COPY --from=app-build $BUILD_PATH/dependencies/ ./
 COPY --from=app-build $BUILD_PATH/snapshot-dependencies/ ./
-RUN # Print the contents of the directory after jlink
-RUN # Print the contents of the directory after jlink
-RUN # Print the contents of the directory after jlink
+RUN echo # Print the contents of the directory after jlink
 COPY --from=app-build $BUILD_PATH/application/ ./
-# Print the contents of the directory after jlink
-RUN ls -la
 
 # Specify the command to run when the Docker container starts
 ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
