@@ -43,6 +43,7 @@ COPY --from=app-build $BUILD_PATH/jdk $JAVA_HOME
 COPY --from=app-build $BUILD_PATH/spring-boot-loader/ ./
 COPY --from=app-build $BUILD_PATH/dependencies/ ./
 COPY --from=app-build $BUILD_PATH/snapshot-dependencies/ ./
+RUN echo "The application itself is copied from $BUILD_PATH/application"
 COPY --from=app-build $BUILD_PATH/application/ ./
 
 ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
