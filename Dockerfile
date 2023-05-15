@@ -56,6 +56,14 @@ RUN groupadd --gid 1000 spring-app \
 USER spring-app:spring-app
 WORKDIR /opt/workspace
 
+# Switch back to root user to create directories and change ownership
+USER root
+RUN mkdir -p /opt/workspace \
+  && chown -R spring-app:spring-app /opt/workspace
+
+# Switch back to spring-app user
+USER spring-app:spring-app
+
 # Copy the JRE and the application layers from the first stage
 COPY --from=app-build $BUILD_PATH/jdk $JAVA_HOME
 COPY --from=app-build $BUILD_PATH/spring-boot-loader/ ./
