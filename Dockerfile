@@ -57,7 +57,7 @@ COPY --from=app-build $BUILD_PATH/jdk $JAVA_HOME
 COPY --from=app-build $BUILD_PATH/spring-boot-loader/ ./
 COPY --from=app-build $BUILD_PATH/dependencies/ ./
 COPY --from=app-build $BUILD_PATH/snapshot-dependencies/ ./
-RUN ECHO "Here"
+RUN echo "Here"
 COPY --from=app-build $BUILD_PATH/application/ ./
 
 # Specify the command to run when the Docker container starts
