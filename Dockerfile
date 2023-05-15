@@ -52,7 +52,7 @@ RUN groupadd --gid 1000 spring-app \
   && useradd --uid 1000 --gid spring-app --shell /bin/bash --create-home spring-app
 
 # Use the non-root user and set the working directory
-USER USER spring-app:spring-app
+USER spring-app:spring-app
 WORKDIR /opt/workspace
 
 # Copy the JRE and the application layers from the first stage
@@ -60,10 +60,9 @@ COPY --from=app-build $BUILD_PATH/jdk $JAVA_HOME
 COPY --from=app-build $BUILD_PATH/spring-boot-loader/ ./
 COPY --from=app-build $BUILD_PATH/dependencies/ ./
 COPY --from=app-build $BUILD_PATH/snapshot-dependencies/ ./
-COPY --from=app-build $BUILD_PATH/application/ ./
-
 # Print the contents of the directory after jlink
 RUN ls -la
+COPY --from=app-build $BUILD_PATH/application/ ./
 
 # Specify the command to run when the Docker container starts
 ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
