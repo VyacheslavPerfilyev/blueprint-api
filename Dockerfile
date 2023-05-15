@@ -26,7 +26,6 @@ USER spring-app:spring-app
 RUN java -Djarmode=layertools -jar application.jar extract
 
 # Use jlink to build a custom JRE based on the modules the application needs
-# Note: This will fail if any of the JAR files are multi-release JAR files
 RUN $JAVA_HOME/bin/jlink \
          --add-modules `jdeps --ignore-missing-deps -q -recursive --multi-release ${RELEASE} --print-module-deps -cp "dependencies/BOOT-INF/lib/*":"snapshot-dependencies/BOOT-INF/lib/*" application.jar` \
          --strip-debug \
@@ -43,17 +42,17 @@ ARG BUILD_PATH=/opt/build
 
 # Set the JAVA_HOME environment variable
 ENV JAVA_HOME=/opt/jdk
-
-# Add the Java binaries to the PATH
 ENV PATH "${JAVA_HOME}/bin:${PATH}"
 
 ## Create the same non-root user as in the first stage
-#RUN groupadd --gid 1000 spring-app \
-#  && useradd --uid 1000 --gid spring-app --shell /bin/bash --create-home spring-app
-#
+RUN groupadd --gid 1000 spring-app \
+  && useradd --uid 1000 --gid spring-app --shell /bin/bash --create-home spring-app
+
 ## Use the non-root user and set the working directory
-#USER spring-app:spring-app
+USER spring-app:spring-app
 WORKDIR /opt/workspace
+
+RUN ls -la
 
 # Copy the JRE and the application layers from the first stage
 COPY --from=app-build $BUILD_PATH/jdk $JAVA_HOME
