@@ -47,12 +47,12 @@ ENV JAVA_HOME=/opt/jdk
 # Add the Java binaries to the PATH
 ENV PATH "${JAVA_HOME}/bin:${PATH}"
 
-# Create the same non-root user as in the first stage
-RUN groupadd --gid 1000 spring-app \
-  && useradd --uid 1000 --gid spring-app --shell /bin/bash --create-home spring-app
-
-# Use the non-root user and set the working directory
-USER spring-app:spring-app
+## Create the same non-root user as in the first stage
+#RUN groupadd --gid 1000 spring-app \
+#  && useradd --uid 1000 --gid spring-app --shell /bin/bash --create-home spring-app
+#
+## Use the non-root user and set the working directory
+#USER spring-app:spring-app
 WORKDIR /opt/workspace
 
 # Copy the JRE and the application layers from the first stage
