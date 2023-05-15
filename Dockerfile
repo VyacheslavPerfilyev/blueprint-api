@@ -54,10 +54,13 @@ WORKDIR /opt/workspace
 
 # Copy the JRE and the application layers from the first stage
 COPY --from=app-build $BUILD_PATH/jdk $JAVA_HOME
-RUN ls -la
 COPY --from=app-build $BUILD_PATH/spring-boot-loader/ ./
 COPY --from=app-build $BUILD_PATH/dependencies/ ./
+# Print the contents of the directory after jlink
+RUN ls -la
 COPY --from=app-build $BUILD_PATH/snapshot-dependencies/ ./
+# Print the contents of the directory after jlink
+RUN ls -la
 COPY --from=app-build $BUILD_PATH/application/ ./
 
 # Specify the command to run when the Docker container starts
