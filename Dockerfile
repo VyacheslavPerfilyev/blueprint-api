@@ -53,16 +53,8 @@ RUN groupadd --gid 1000 spring-app \
   && useradd --uid 1000 --gid spring-app --shell /bin/bash --create-home spring-app
 
 # Use the non-root user and set the working directory
-USER spring-app:spring-app
-WORKDIR /opt/workspace
-
-# Switch back to root user to create directories and change ownership
 USER root
-RUN mkdir -p /opt/workspace \
-  && chown -R spring-app:spring-app /opt/workspace
-
-# Switch back to spring-app user
-USER spring-app:spring-app
+WORKDIR /opt/workspace
 
 # Copy the JRE and the application layers from the first stage
 COPY --from=app-build $BUILD_PATH/jdk $JAVA_HOME
