@@ -52,10 +52,9 @@ RUN groupadd --gid 1000 spring-app \
 USER spring-app:spring-app
 WORKDIR /opt/workspace
 
-RUN ls -la
-
 # Copy the JRE and the application layers from the first stage
 COPY --from=app-build $BUILD_PATH/jdk $JAVA_HOME
+RUN ls -la
 COPY --from=app-build $BUILD_PATH/spring-boot-loader/ ./
 COPY --from=app-build $BUILD_PATH/dependencies/ ./
 COPY --from=app-build $BUILD_PATH/snapshot-dependencies/ ./
