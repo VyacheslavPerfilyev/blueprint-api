@@ -1,1 +1,3 @@
-
+app:
+  cors:
+    allowed-origin: ${ALLOWED_ORIGIN:http://localhost:4200}
