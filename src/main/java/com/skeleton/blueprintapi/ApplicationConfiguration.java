@@ -26,6 +26,7 @@ public class ApplicationConfiguration {
     public CorsConfigurationSource corsConfigurationSource(
             @Value("${app.cors.allowed-origin}") List<String> allowedOrigins
     ) {
+        System.out.println(allowedOrigins);
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.setAllowedOriginPatterns(allowedOrigins);
